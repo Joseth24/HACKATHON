@@ -3,35 +3,68 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+        <p:growl autoUpdate="true"/>
         <h:form id="frm">
-            <p:growl id="msj" autoUpdate="true"/>
-            <p:panelGrid columns="1">
-                <p:inputText value="#{asistenteC.asistente.nombre}" placeholder="Nombre"/>
-                <p:inputText value="#{asistenteC.asistente.apellido}" placeholder="Apellido"/>
-                <p:inputText value="#{asistenteC.asistente.celular}" placeholder="Celular"/>
-                <p:commandButton value="GUARDAR" actionListener="#{asistenteC.Guardar(Asistente)}" update=":data"/>
-            </p:panelGrid>
-        </h:form>
+            <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{asistenteC.setAccion('Registrar')}" update=":dlgDatos :newform"/>
+            <p:dataTable id="data" value="#{asistenteC.lstAsistente}" var="asistente" rows="10" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,10000"  emptyMessage="No esta la Lista">
 
-        <h:form id="data">
-            <p:dataTable value="#{asistenteC.lstAsistente}">
-                <p:column headerText="Nombre" >
-                    <h:outputText value="#{asistenteC.asistente.nombre}"/>
+                <f:facet name="header">
+                </f:facet>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{asistente.nombre}"/>
                 </p:column>
-                <p:column headerText="Apellido" >
-                    <h:outputText value="#{asistenteC.asistente.apellido}"/>
+                <p:column headerText="Apellido">
+                    <h:outputText value="#{asistente.apellido}"/>
                 </p:column>
-                <p:column headerText="Celular" >
-                    <h:outputText value="#{asistenteC.asistente.celular}"/>
+                <p:column headerText="Celular">
+                    <h:outputText value="#{asistente.celular}"/>
                 </p:column>
+                <p:column style="width:54px">
+                    <p:commandButton title="MODIFICAR" icon="ui-icon-pencil" actionListener="#{asistenteC.leerID(asistente.codigo)}" oncomplete="PF('wdlgDatos').show();" update=":dlgDatos"/>
+                </p:column>
+                <p:column style="width:54px">
+                    <p:growl id="message" showDetail="true"/>
+                    <p:commandButton title="ELIMINAR" icon="ui-icon-circle-close" actionListener="#{asistenteC.eliminar(asistente)}" update="data">
+                        <p:confirm header="Confirmación" message=" ¿Deseas Eliminar? " icon="ui-icon-alert"/>
+                        <p:tooltip trackMouse="true"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="face" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialo-no" icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </p:column>
+                <f:facet name="footer">
+                    EN TOTAL HAY #{fn:length(asistenteC.lstAsistente)} REGISTRADOS.
+                </f:facet>
             </p:dataTable>
         </h:form>
+
+        <p:dialog showEffect="explode" modal="true" hideEffect="explode" header="Datos" widgetVar="wdlgDatos" id="dlgDatos">
+            <h:form id="newform">
+                <p:panelGrid columns="1">
+                    <p:inputText placeholder="NOMBRE" value="#{asistenteC.asistente.nombre}" requiredMessage="INGRESAR NOMBRE" required="true">
+                        <p:keyFilter regEx="/[ABCDEFGHIJKLMN ÑOPQRSTUVWXYZ]/i"/>
+                    </p:inputText>
+                    <p:inputText placeholder="APELLIDO" value="#{asistenteC.asistente.apellido}" requiredMessage="INGRESAR APELLIDO" required="true">
+                        <p:keyFilter regEx="/[ABCDEFGHIJKLMN ÑOPQRSTUVWXYZ]/i"/>
+                    </p:inputText>
+                    <p:inputText placeholder="CELULAR" value="#{asistenteC.asistente.celular}" requiredMessage="INGRESAR NUMERO DE CELULAR" required="true"/>
+
+                    <p:commandButton value="#{asistenteC.accion}" actionListener="#{asistenteC.operar()}" oncomplete="PF('wdlgDatos').hide();" update="dlgDatos :frm:data"/>
+                    <p:commandButton value="CANCELAR" immediate="true" oncomplete="PF('wdlgdatos').hide();"/>
+                </p:panelGrid>
+
+            </h:form>
+        </p:dialog>
     </h:body>
 </html>
 
