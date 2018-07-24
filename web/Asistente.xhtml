@@ -9,14 +9,28 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="frm">
             <p:growl id="msj" autoUpdate="true"/>
             <p:panelGrid columns="1">
-                <p:inputText value="" placeholder="Nombre"/>
-                <p:inputText value="" placeholder="Apellido"/>
-                <p:inputText value="" placeholder="Celular"/>
-                <p:commandButton value="GUARDAR" actionListener="#{asistenteC.Guardar(Asisten)}"/>
+                <p:inputText value="#{asistenteC.asistente.nombre}" placeholder="Nombre"/>
+                <p:inputText value="#{asistenteC.asistente.apellido}" placeholder="Apellido"/>
+                <p:inputText value="#{asistenteC.asistente.celular}" placeholder="Celular"/>
+                <p:commandButton value="GUARDAR" actionListener="#{asistenteC.Guardar(Asistente)}" update=":data"/>
             </p:panelGrid>
+        </h:form>
+
+        <h:form id="data">
+            <p:dataTable value="#{asistenteC.lstAsistente}">
+                <p:column headerText="Nombre" >
+                    <h:outputText value="#{asistenteC.asistente.nombre}"/>
+                </p:column>
+                <p:column headerText="Apellido" >
+                    <h:outputText value="#{asistenteC.asistente.apellido}"/>
+                </p:column>
+                <p:column headerText="Celular" >
+                    <h:outputText value="#{asistenteC.asistente.celular}"/>
+                </p:column>
+            </p:dataTable>
         </h:form>
     </h:body>
 </html>

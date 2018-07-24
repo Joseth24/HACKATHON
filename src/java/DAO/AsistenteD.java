@@ -9,14 +9,16 @@ import java.util.List;
 
 public class AsistenteD extends DAO {
 
-    public void registrar(AsistenteM asis) throws Exception {
+   
+
+    public void registrar(AsistenteM asistente) throws Exception {
         try {
             this.Conexion();
             String sql = "SP_ASISTENTE_ADD ?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getNombre());
-            st.setString(2, asis.getApellido());
-            st.setString(3, asis.getCelular());
+            st.setString(1, asistente.getNombre());
+            st.setString(2, asistente.getApellido());
+            st.setString(3, asistente.getCelular());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;

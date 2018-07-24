@@ -13,8 +13,8 @@ import javax.faces.context.FacesContext;
 @Dependent
 public class AsistenteC {
 
-    private AsistenteM asis = new AsistenteM();
-    List<AsistenteM> lstAsistente;
+    private AsistenteM asistente = new AsistenteM();
+    private List<AsistenteM> lstAsistente;
 
     @PostConstruct
     public void Iniciar() {
@@ -24,13 +24,18 @@ public class AsistenteC {
         }
     }
 
-    public void Guardar(AsistenteD Asisten) throws Exception {
+    public void Limpiar(){
+    this.asistente.getNombre();
+    }
+   
+    public void Guardar(AsistenteD Asistente) throws Exception {
         AsistenteD DAO;
         try {
             DAO = new AsistenteD();
-            DAO.registrar(asis);
+            DAO.registrar(asistente);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("AGREGADO"));
             Listar();
+            Limpiar();
         } catch (Exception e) {
             throw e;
         }
@@ -40,7 +45,7 @@ public class AsistenteC {
         AsistenteD DAO;
         try {
             DAO = new AsistenteD();
-            DAO.Modificar(asis);
+            DAO.Modificar(asistente);
             Listar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ACTUALIZADO"));
         } catch (Exception e) {
@@ -53,7 +58,7 @@ public class AsistenteC {
         AsistenteD DAO;
         try {
             DAO = new AsistenteD();
-            DAO.Eliminar(asis);
+            DAO.Eliminar(asistente);
             Listar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ELIMINADO"));
         } catch (Exception e) {
@@ -71,4 +76,22 @@ public class AsistenteC {
         }
 
     }
+
+    public AsistenteM getAsistente() {
+        return asistente;
+    }
+
+    public void setAsistente(AsistenteM asistente) {
+        this.asistente = asistente;
+    }
+
+    public List<AsistenteM> getLstAsistente() {
+        return lstAsistente;
+    }
+
+    public void setLstAsistente(List<AsistenteM> lstAsistente) {
+        this.lstAsistente = lstAsistente;
+    }
+    
+    
 }
