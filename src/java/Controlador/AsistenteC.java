@@ -24,7 +24,7 @@ public class AsistenteC {
         }
     }
 
-    public void Guardar() throws Exception {
+    public void Guardar(AsistenteD Asisten) throws Exception {
         AsistenteD DAO;
         try {
             DAO = new AsistenteD();
@@ -35,8 +35,8 @@ public class AsistenteC {
             throw e;
         }
     }
-    
-    public void modificar() throws Exception{
+
+    public void modificar() throws Exception {
         AsistenteD DAO;
         try {
             DAO = new AsistenteD();
@@ -48,29 +48,27 @@ public class AsistenteC {
             throw e;
         }
     }
-    
-    public void eliminar() throws Exception{
-        AsistenteD DAO;
-        try {
-         DAO = new AsistenteD();
-         DAO.Eliminar(asis);
-         Listar();
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ELIMINADO"));
-        } catch (Exception e) {
-            throw e;
-        }           
-            
-    }
 
-    public void Listar() throws Exception{
+    public void eliminar() throws Exception {
         AsistenteD DAO;
         try {
             DAO = new AsistenteD();
-            lstAsistente =  DAO.Listar();            
+            DAO.Eliminar(asis);
+            Listar();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ELIMINADO"));
         } catch (Exception e) {
             throw e;
         }
-            
-            
+    }
+
+    public void Listar() throws Exception {
+        AsistenteD DAO;
+        try {
+            DAO = new AsistenteD();
+            lstAsistente = DAO.Listar();
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 }

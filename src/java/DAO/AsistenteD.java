@@ -64,7 +64,7 @@ public class AsistenteD extends DAO {
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
             Lista = new ArrayList();
-            while(rs.next()){
+            while (rs.next()) {
                 AsistenteM Asis = new AsistenteM();
                 Asis.setCodigo(rs.getString("IdAsistente"));
                 Asis.setNombre(rs.getString("NombreAsistente"));
