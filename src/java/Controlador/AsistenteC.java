@@ -3,10 +3,10 @@ package Controlador;
 import DAO.AsistenteD;
 import Modelo.AsistenteM;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -105,5 +105,10 @@ public class AsistenteC implements Serializable{
         } catch (Exception e) {
             throw e;
         }
+    }
+    
+        public List<String> completeTextAsistente(String query) throws SQLException {
+        AsistenteD DAO = new AsistenteD();
+        return DAO.autocompleteAsistente(query);
     }
 }

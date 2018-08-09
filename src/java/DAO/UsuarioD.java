@@ -1,22 +1,22 @@
 package DAO;
 
-import Modelo.AsistenteM;
+import Modelo.UsuarioM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AsistenteD extends DAO {
+public class UsuarioD extends DAO {
 
-    public void registrar(AsistenteM asistente) throws Exception {
+    public void registrar(UsuarioM usuario) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Asistente (NombreAsistente, ApellidoAsistente, CelularAsistente) VALUES(?,?,?)";
+            String sql = "INSERT INTO Usuario (Nombreusuario, ApellidoUsuario, CelularUsuario) VALUES(?,?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asistente.getNombre());
-            st.setString(2, asistente.getApellido());
-            st.setString(3, asistente.getCelular());
+            st.setString(1, usuario.getNombre());
+            st.setString(2, usuario.getApellido());
+            st.setString(3, usuario.getCelular());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -25,12 +25,12 @@ public class AsistenteD extends DAO {
         }
     }
 
-    public void Eliminar(AsistenteM asis) throws Exception {
+    public void Eliminar(UsuarioM user) throws Exception {
         try {
             this.Conexion();
-            String sql = "delete from Asistente Where IdAsistente=?";
+            String sql = "delete from Usuario Where IdUsuario=?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getCodigo());
+            st.setString(1, user.getIdUsuario());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -39,15 +39,15 @@ public class AsistenteD extends DAO {
         }
     }
 
-    public void Modificar(AsistenteM asis) throws Exception {
+    public void Modificar(UsuarioM user) throws Exception {
         try {
             this.Conexion();
             String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getCodigo());
-            st.setString(2, asis.getNombre());
-            st.setString(3, asis.getApellido());
-            st.setString(4, asis.getCelular());
+            st.setString(1, user.getIdUsuario());
+            st.setString(2, user.getNombre());
+            st.setString(3, user.getApellido());
+            st.setString(4, user.getCelular());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -56,22 +56,22 @@ public class AsistenteD extends DAO {
         }
     }
 
-    public List<AsistenteM> Listar() throws Exception {
-        List<AsistenteM> Lista;
+    public List<UsuarioM> Listar() throws Exception {
+        List<UsuarioM> Lista;
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT * FROM Asistente ";
+            String sql = "SELECT * FROM Usuario ";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
             Lista = new ArrayList();
             while (rs.next()) {
-                AsistenteM asis = new AsistenteM();
-                asis.setCodigo(rs.getString("IdAsistente"));
-                asis.setNombre(rs.getString("NombreAsistente"));
-                asis.setApellido(rs.getString("ApellidoAsistente"));
-                asis.setCelular(rs.getString("CelularAsistente"));
-                Lista.add(asis);
+                UsuarioM user = new UsuarioM();
+                user.setIdUsuario(rs.getString("IdUsuario"));
+                user.setNombre(rs.getString("NombreUsuario"));
+                user.setApellido(rs.getString("ApellidoUsuario"));
+                user.setCelular(rs.getString("CelularUsuario"));
+                Lista.add(user);
             }
         } catch (SQLException e) {
             throw e;
@@ -81,28 +81,66 @@ public class AsistenteD extends DAO {
         return Lista;
     }
 
-    public AsistenteM LeerId(String Codigo) throws Exception {
-        AsistenteM asis = null;
+    public UsuarioM LeerId(String Codigo) throws Exception {
+        UsuarioM user = null;
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT IdAsistente,NombreAsistente,ApellidoAsistente,CelularAsistente FROM Asistente WHERE IdAsistente=?";
+            String sql = "SELECT IdUsuario,NombreUsuario,ApellidoUsuario,CelularUsuario FROM Usuario WHERE IdUsuario=?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, Codigo);
             rs = st.executeQuery();
             while (rs.next()) {
-                asis = new AsistenteM();
-                asis.setCodigo(rs.getString("IdAsistente"));
-                asis.setNombre(rs.getString("NombreAsistente"));
-                asis.setApellido(rs.getString("ApellidoAsistente"));
-                asis.setCelular(rs.getString("CelularAsistente"));
+                user = new UsuarioM();
+                user.setIdUsuario(rs.getString("IdUsuario"));
+                user.setNombre(rs.getString("NombreUsuario"));
+                user.setApellido(rs.getString("ApellidoUsuario"));
+                user.setCelular(rs.getString("CelularUsuario"));
             }
         } catch (SQLException e) {
             throw e;
         } finally {
             this.Cerrar();
         }
-        return asis;
+        return user;
+    }
+
+    public String obtenerCodigoUsuario(String usuario) throws SQLException {
+        this.Conexion();
+        ResultSet rs;
+        try {
+            String sql = "select IdUsuario from Usuario where concat(NombreUsuario,' ',ApellidoUsuario) like ?";
+            PreparedStatement ps = this.getCn().prepareCall(sql);
+            ps.setString(1, usuario);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("IdUsuario");
+            }
+            return null;
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    public List<String> autocompleteUsuario(String Consulta) throws SQLException {
+        this.Conexion();
+        ResultSet rs;
+        List<String> Lista;
+        try {
+            String sql = "select concat(NombreUsuario,' ',ApellidoUsuario) AS Usuario from Usuario where UPPER(NombreUsuario) like UPPER(?) or UPPER(ApellidoUsuario) like UPPER(?)";
+            PreparedStatement ps = this.getCn().prepareCall(sql);
+            ps.setString(1, "%" + Consulta + "%");
+            ps.setString(2, "%" + Consulta + "%");
+            Lista = new ArrayList<>();
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Lista.add(rs.getString("Usuarios"));
+            }
+            return Lista;
+        } catch (SQLException e) {
+            throw e;
+        }
     }
 
 }

@@ -1,24 +1,23 @@
 package Controlador;
 
-import DAO.AsistenteD;
-import Modelo.AsistenteM;
+import DAO.PasajeroD;
+import Modelo.PasajeroM;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import lombok.Data;
 
-@Named(value = "asistenteC")
+@Named(value = "pasajeroC")
 @SessionScoped
 @Data
-public class AsistenteC implements Serializable{
+public class PasajeroC implements Serializable{
 
-    private AsistenteM asistente = new AsistenteM();
-    private List<AsistenteM> lstAsistente;
+    private PasajeroM pasajero = new PasajeroM();
+    private List<PasajeroM> lstPasajero;
     private String accion = "Defecto";
 
     @PostConstruct
@@ -41,14 +40,14 @@ public class AsistenteC implements Serializable{
     }
 
     public void Limpiar() {
-        asistente = new AsistenteM();
+        pasajero = new PasajeroM();
     }
 
     private void guardar() throws Exception {
-        AsistenteD DAO;
+        PasajeroD DAO;
         try {
-            DAO = new AsistenteD();
-            DAO.registrar(asistente);
+            DAO = new PasajeroD();
+            DAO.registrar(pasajero);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("AGREGADO"));
             Listar();
             Limpiar();
@@ -59,10 +58,10 @@ public class AsistenteC implements Serializable{
     }
 
     public void modificar() throws Exception {
-        AsistenteD DAO;
+        PasajeroD DAO;
         try {
-            DAO = new AsistenteD();
-            DAO.Modificar(asistente);
+            DAO = new PasajeroD();
+            DAO.Modificar(pasajero);
             Listar();
             Limpiar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ACTUALIZADO"));
@@ -72,11 +71,11 @@ public class AsistenteC implements Serializable{
         }
     }
 
-    public void eliminar(AsistenteM asis) throws Exception {
-        AsistenteD DAO;
+    public void eliminar(PasajeroM pasa) throws Exception {
+        PasajeroD DAO;
         try {
-            DAO = new AsistenteD();
-            DAO.Eliminar(asis);
+            DAO = new PasajeroD();
+            DAO.Eliminar(pasa);
             Listar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ELIMINADO"));
         } catch (Exception e) {
@@ -86,10 +85,10 @@ public class AsistenteC implements Serializable{
     }
 
     public void Listar() throws Exception {
-        AsistenteD DAO;
+        PasajeroD DAO;
         try {
-            DAO = new AsistenteD();
-            lstAsistente = DAO.Listar();
+            DAO = new PasajeroD();
+            lstPasajero = DAO.Listar();
         } catch (Exception e) {
             throw e;
         }
@@ -97,10 +96,10 @@ public class AsistenteC implements Serializable{
     }
 
     public void leerID(String Codigo) throws Exception {
-        AsistenteD DAO;
+        PasajeroD DAO;
         try {
-            DAO = new AsistenteD();
-            this.asistente = DAO.LeerId(Codigo);
+            DAO = new PasajeroD();
+            this.pasajero = DAO.LeerId(Codigo);
             this.accion = "Modificar";
         } catch (Exception e) {
             throw e;

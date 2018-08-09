@@ -1,22 +1,22 @@
 package DAO;
 
-import Modelo.AsistenteM;
+import Modelo.PasajeroM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AsistenteD extends DAO {
+public class PasajeroD extends DAO {
 
-    public void registrar(AsistenteM asistente) throws Exception {
+    public void registrar(PasajeroM pasajero) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Asistente (NombreAsistente, ApellidoAsistente, CelularAsistente) VALUES(?,?,?)";
+            String sql = "INSERT INTO Pasajero (NombrePasajero, ApellidoPasajero, DniPasajero) VALUES(?,?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asistente.getNombre());
-            st.setString(2, asistente.getApellido());
-            st.setString(3, asistente.getCelular());
+            st.setString(1, pasajero.getNombre());
+            st.setString(2, pasajero.getApellido());
+            st.setString(3, pasajero.getDni());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -25,12 +25,12 @@ public class AsistenteD extends DAO {
         }
     }
 
-    public void Eliminar(AsistenteM asis) throws Exception {
+    public void Eliminar(PasajeroM pasa) throws Exception {
         try {
             this.Conexion();
-            String sql = "delete from Asistente Where IdAsistente=?";
+            String sql = "delete from Pasajero Where IdPasajero=?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getCodigo());
+            st.setString(1, pasa.getIdPasajero());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -39,15 +39,15 @@ public class AsistenteD extends DAO {
         }
     }
 
-    public void Modificar(AsistenteM asis) throws Exception {
+    public void Modificar(PasajeroM asis) throws Exception {
         try {
             this.Conexion();
             String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getCodigo());
+            st.setString(1, asis.getIdPasajero());
             st.setString(2, asis.getNombre());
             st.setString(3, asis.getApellido());
-            st.setString(4, asis.getCelular());
+            st.setString(4, asis.getDni());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -56,22 +56,22 @@ public class AsistenteD extends DAO {
         }
     }
 
-    public List<AsistenteM> Listar() throws Exception {
-        List<AsistenteM> Lista;
+    public List<PasajeroM> Listar() throws Exception {
+        List<PasajeroM> Lista;
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT * FROM Asistente ";
+            String sql = "SELECT * FROM Pasajero ";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
             Lista = new ArrayList();
             while (rs.next()) {
-                AsistenteM asis = new AsistenteM();
-                asis.setCodigo(rs.getString("IdAsistente"));
-                asis.setNombre(rs.getString("NombreAsistente"));
-                asis.setApellido(rs.getString("ApellidoAsistente"));
-                asis.setCelular(rs.getString("CelularAsistente"));
-                Lista.add(asis);
+                PasajeroM pasa = new PasajeroM();
+                pasa.setIdPasajero(rs.getString("IdPasajero"));
+                pasa.setNombre(rs.getString("NombrePasajero"));
+                pasa.setApellido(rs.getString("ApellidoPasajero"));
+                pasa.setDni(rs.getString("DniPasajero"));
+                Lista.add(pasa);
             }
         } catch (SQLException e) {
             throw e;
@@ -81,28 +81,66 @@ public class AsistenteD extends DAO {
         return Lista;
     }
 
-    public AsistenteM LeerId(String Codigo) throws Exception {
-        AsistenteM asis = null;
+    public PasajeroM LeerId(String Codigo) throws Exception {
+        PasajeroM pasa = null;
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT IdAsistente,NombreAsistente,ApellidoAsistente,CelularAsistente FROM Asistente WHERE IdAsistente=?";
+            String sql = "SELECT IdPasajero,NombrePasajero,ApellidoPasajero,DniPasajero FROM Pasajero WHERE IdPasajero=?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, Codigo);
             rs = st.executeQuery();
             while (rs.next()) {
-                asis = new AsistenteM();
-                asis.setCodigo(rs.getString("IdAsistente"));
-                asis.setNombre(rs.getString("NombreAsistente"));
-                asis.setApellido(rs.getString("ApellidoAsistente"));
-                asis.setCelular(rs.getString("CelularAsistente"));
+                pasa = new PasajeroM();
+                pasa.setIdPasajero(rs.getString("IdPasajero"));
+                pasa.setNombre(rs.getString("NombrePasajero"));
+                pasa.setApellido(rs.getString("ApellidoPasajero"));
+                pasa.setDni(rs.getString("DniPasajero"));
             }
         } catch (SQLException e) {
             throw e;
         } finally {
             this.Cerrar();
         }
-        return asis;
+        return pasa;
+    }
+
+    public String obtenerCodigoPasajero(String pasajero) throws SQLException {
+        this.Conexion();
+        ResultSet rs;
+        try {
+            String sql = "select IdPasajero from Pasajero where concat(NombrePasajero,' ',ApellidoPasajero) like ?";
+            PreparedStatement ps = this.getCn().prepareCall(sql);
+            ps.setString(1, pasajero);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("IdPasajero");
+            }
+            return null;
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    public List<String> autocompletePasajero(String Consulta) throws SQLException {
+        this.Conexion();
+        ResultSet rs;
+        List<String> Lista;
+        try {
+            String sql = "select concat(NombrePasajero,' ',ApellidoPasajero) AS Pasajero from Pasajero where UPPER(NombrePasajero) like UPPER(?) or UPPER(ApellidoPasajero) like UPPER(?)";
+            PreparedStatement ps = this.getCn().prepareCall(sql);
+            ps.setString(1, "%" + Consulta + "%");
+            ps.setString(2, "%" + Consulta + "%");
+            Lista = new ArrayList<>();
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Lista.add(rs.getString("Pasajero"));
+            }
+            return Lista;
+        } catch (SQLException e) {
+            throw e;
+        }
     }
 
 }

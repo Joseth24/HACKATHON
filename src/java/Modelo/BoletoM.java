@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BoletoM {
 
-    private String Codigo;
+    private String IdBoleto;
     private String Origen;
     private String Destino;
     private String FechaViaje;
@@ -23,5 +23,13 @@ public class BoletoM {
     //Bus
     private String CodigoBus;
     private String PlacaBus;
+    
+    //Asistente
+    private String CodigoAsistente;
+    private String NombreAsistente;
+    
+    //Chofer
+    private String CodigoChofer;
+    private String NombreChofer;
 
 }

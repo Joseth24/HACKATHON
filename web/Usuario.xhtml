@@ -7,33 +7,33 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title>Facelet Title</title>
+        <title>USUARIO</title>
     </h:head>
     <h:body>
         <p:growl autoUpdate="true"/>
         <h:form id="frm">
-            <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{asistenteC.setAccion('Registrar')}" update=":dlgDatos :newform"/>
-            <p:dataTable id="data" value="#{asistenteC.lstAsistente}" var="asistente" rows="10" paginator="true" 
+            <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{usuarioC.setAccion('Registrar')}" update=":dlgDatos :newform"/>
+            <p:dataTable id="data" value="#{usuarioC.lstUsuario}" var="usuario" rows="10" paginator="true" 
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,10000"  emptyMessage="No esta la Lista">
 
                 <f:facet name="header">
                 </f:facet>
                 <p:column headerText="Nombre">
-                    <h:outputText value="#{asistente.nombre}"/>
+                    <h:outputText value="#{usuario.nombre}"/>
                 </p:column>
                 <p:column headerText="Apellido">
-                    <h:outputText value="#{asistente.apellido}"/>
+                    <h:outputText value="#{usuario.apellido}"/>
                 </p:column>
                 <p:column headerText="Celular">
-                    <h:outputText value="#{asistente.celular}"/>
+                    <h:outputText value="#{usuario.celular}"/>
                 </p:column>
                 <p:column style="width:54px">
-                    <p:commandButton title="MODIFICAR" icon="ui-icon-pencil" actionListener="#{asistenteC.leerID(asistente.codigo)}" oncomplete="PF('wdlgDatos').show();" update=":dlgDatos"/>
+                    <p:commandButton title="MODIFICAR" icon="ui-icon-pencil" actionListener="#{usuarioC.leerID(usuario.idUsuario)}" oncomplete="PF('wdlgDatos').show();" update=":dlgDatos"/>
                 </p:column>
                 <p:column style="width:54px">
                     <p:growl id="message" showDetail="true"/>
-                    <p:commandButton title="ELIMINAR" icon="ui-icon-circle-close" actionListener="#{asistenteC.eliminar(asistente)}" update="data">
+                    <p:commandButton title="ELIMINAR" icon="ui-icon-circle-close" actionListener="#{usuarioC.eliminar(usuario)}" update="data">
                         <p:confirm header="Confirmación" message=" ¿Deseas Eliminar? " icon="ui-icon-alert"/>
                         <p:tooltip trackMouse="true"/>
                     </p:commandButton>
@@ -43,7 +43,7 @@
                     </p:confirmDialog>
                 </p:column>
                 <f:facet name="footer">
-                    EN TOTAL HAY #{fn:length(asistenteC.lstAsistente)} REGISTRADOS.
+                    EN TOTAL HAY #{fn:length(usuarioC.lstUsuario)} REGISTRADOS.
                 </f:facet>
             </p:dataTable>
         </h:form>
@@ -51,15 +51,15 @@
         <p:dialog showEffect="explode" modal="true" hideEffect="explode" header="Datos" widgetVar="wdlgDatos" id="dlgDatos">
             <h:form id="newform">
                 <p:panelGrid columns="1">
-                    <p:inputText placeholder="NOMBRE" value="#{asistenteC.asistente.nombre}" requiredMessage="INGRESAR NOMBRE" required="true">
+                    <p:inputText placeholder="NOMBRE" value="#{usuarioC.usuario.nombre}" requiredMessage="INGRESAR NOMBRE" required="true">
                         <p:keyFilter regEx="/[ABCDEFGHIJKLMN ÑOPQRSTUVWXYZ]/i"/>
                     </p:inputText>
-                    <p:inputText placeholder="APELLIDO" value="#{asistenteC.asistente.apellido}" requiredMessage="INGRESAR APELLIDO" required="true">
+                    <p:inputText placeholder="APELLIDO" value="#{usuarioC.usuario.apellido}" requiredMessage="INGRESAR APELLIDO" required="true">
                         <p:keyFilter regEx="/[ABCDEFGHIJKLMN ÑOPQRSTUVWXYZ]/i"/>
                     </p:inputText>
-                    <p:inputText placeholder="CELULAR" value="#{asistenteC.asistente.celular}" requiredMessage="INGRESAR NUMERO DE CELULAR" required="true"/>
+                    <p:inputText placeholder="CELULAR" value="#{usuarioC.usuario.celular}" requiredMessage="INGRESAR NUMERO DE CELULAR" required="true"/>
 
-                    <p:commandButton value="#{asistenteC.accion}" actionListener="#{asistenteC.operar()}" oncomplete="PF('wdlgDatos').hide();" update="dlgDatos :frm:data"/>
+                    <p:commandButton value="#{usuarioC.accion}" actionListener="#{usuarioC.operar()}" oncomplete="PF('wdlgDatos').hide();" update="dlgDatos :frm:data"/>
                     <p:commandButton value="CANCELAR" immediate="true" oncomplete="PF('wdlgdatos').hide();"/>
                 </p:panelGrid>
 

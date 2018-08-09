@@ -30,7 +30,7 @@ public class AsistenteD extends DAO {
             this.Conexion();
             String sql = "delete from Asistente Where IdAsistente=?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getCodigo());
+            st.setString(1, asis.getIdAsistente());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -44,7 +44,7 @@ public class AsistenteD extends DAO {
             this.Conexion();
             String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getCodigo());
+            st.setString(1, asis.getIdAsistente());
             st.setString(2, asis.getNombre());
             st.setString(3, asis.getApellido());
             st.setString(4, asis.getCelular());
@@ -67,7 +67,7 @@ public class AsistenteD extends DAO {
             Lista = new ArrayList();
             while (rs.next()) {
                 AsistenteM asis = new AsistenteM();
-                asis.setCodigo(rs.getString("IdAsistente"));
+                asis.setIdAsistente(rs.getString("IdAsistente"));
                 asis.setNombre(rs.getString("NombreAsistente"));
                 asis.setApellido(rs.getString("ApellidoAsistente"));
                 asis.setCelular(rs.getString("CelularAsistente"));
@@ -92,7 +92,7 @@ public class AsistenteD extends DAO {
             rs = st.executeQuery();
             while (rs.next()) {
                 asis = new AsistenteM();
-                asis.setCodigo(rs.getString("IdAsistente"));
+                asis.setIdAsistente(rs.getString("IdAsistente"));
                 asis.setNombre(rs.getString("NombreAsistente"));
                 asis.setApellido(rs.getString("ApellidoAsistente"));
                 asis.setCelular(rs.getString("CelularAsistente"));
@@ -103,6 +103,44 @@ public class AsistenteD extends DAO {
             this.Cerrar();
         }
         return asis;
+    }
+
+    public String obtenerCodigoAsistente(String Asistente) throws SQLException {
+        this.Conexion();
+        ResultSet rs;
+        try {
+            String sql = "select IdAsistente from Asistente where concat(NombreAsistente,' ',ApellidoAsistente) like ?";
+            PreparedStatement ps = this.getCn().prepareCall(sql);
+            ps.setString(1, Asistente);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("IdAsistente");
+            }
+            return null;
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    public List<String> autocompleteAsistente(String Consulta) throws SQLException {
+        this.Conexion();
+        ResultSet rs;
+        List<String> Lista;
+        try {
+            String sql = "select concat(NombreAsistente,' ',ApellidoAsistente) AS Nombres from Asistente where UPPER(NombreAsistente) like UPPER(?) or UPPER(ApellidoAsistente) like UPPER(?)";
+            PreparedStatement ps = this.getCn().prepareCall(sql);
+            ps.setString(1, "%" + Consulta + "%");
+            ps.setString(2, "%" + Consulta + "%");
+            Lista = new ArrayList<>();
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Lista.add(rs.getString("Nombres"));
+            }
+            return Lista;
+        } catch (SQLException e) {
+            throw e;
+        }
     }
 
 }

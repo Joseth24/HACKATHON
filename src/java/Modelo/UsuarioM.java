@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UsuarioM {
 
-    private String Codigo;
+    private String IdUsuario;
     private String Nombre;
     private String Apellido;
     private String Celular;
