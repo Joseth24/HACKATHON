@@ -128,7 +128,7 @@ BEGIN
     UPDATE Usuario
 SET NombreUsuario = @NOMBRE,
     ApellidoUsuario = @APELLIDO,
-    CelularUsuario = @CELULAR
+    CelsularUsuario = @CELULAR
     WHERE IdUsuario = @CODIGO
 END
 GO
