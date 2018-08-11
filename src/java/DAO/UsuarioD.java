@@ -12,7 +12,7 @@ public class UsuarioD extends DAO {
     public void registrar(UsuarioM usuario) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Usuario (Nombreusuario, ApellidoUsuario, CelularUsuario) VALUES(?,?,?)";
+            String sql = "SP_ADD_USUARIO ?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, usuario.getNombre());
             st.setString(2, usuario.getApellido());
@@ -42,7 +42,7 @@ public class UsuarioD extends DAO {
     public void Modificar(UsuarioM user) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
+            String sql = "SP_UPDATE_USUARIO ?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, user.getIdUsuario());
             st.setString(2, user.getNombre());
@@ -121,26 +121,4 @@ public class UsuarioD extends DAO {
             throw e;
         }
     }
-
-    public List<String> autocompleteUsuario(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreUsuario,' ',ApellidoUsuario) AS Usuario from Usuario where UPPER(NombreUsuario) like UPPER(?) or UPPER(ApellidoUsuario) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Usuarios"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
 }

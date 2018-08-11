@@ -45,18 +45,10 @@ public class ChoferC implements Serializable {
         chofer = new ChoferM();
     }
 
-    public List<String> completeText(String query) throws SQLException {
-        ChoferD DAO = new ChoferD();
-        return DAO.autocompleteAsistente(query);
-    }
-
     private void guardar() throws Exception {
         ChoferD DAO;
-        AsistenteD dao2;
         try {
             DAO = new ChoferD();
-            dao2 = new AsistenteD();
-            chofer.setCodigoAsistente(dao2.obtenerCodigoAsistente(chofer.getNombreAsistente()));
             DAO.registrar(chofer);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("AGREGADO"));
             Listar();
@@ -69,11 +61,8 @@ public class ChoferC implements Serializable {
 
     public void modificar() throws Exception {
         ChoferD DAO;
-        AsistenteD dao2;
         try {
             DAO = new ChoferD();
-            dao2 = new AsistenteD();
-            chofer.setCodigoAsistente(dao2.obtenerCodigoAsistente(chofer.getNombreAsistente()));
             DAO.Modificar(chofer);
             Listar();
             Limpiar();

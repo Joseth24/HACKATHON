@@ -12,7 +12,7 @@ public class BoletoD extends DAO {
     public void registrar(BoletoM boleto) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Boleto (OrigenBoleto, DestinoBoleto, FechaViajeBoleto,CostoBoleto,HoraPartida,Asistente_IdAsistente,Pasajero_IdPasajero,Usuario_IdUsuario,Bus_IdBus,Chofer_IdChofer) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            String sql = "SP_ADD_BOLETO ?,?,?,?,?,?,?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, boleto.getOrigen());
             st.setString(2, boleto.getDestino());
@@ -49,7 +49,7 @@ public class BoletoD extends DAO {
     public void Modificar(BoletoM bole) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
+            String sql = "SP_UPDATE_BOLETO ?,?,?,?,?,?,?,?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, bole.getIdBoleto());
             st.setString(2, bole.getOrigen());
@@ -71,14 +71,14 @@ public class BoletoD extends DAO {
     }
 
     public List<BoletoM> Listar() throws Exception {
-        List<BoletoM> Lista;
+        List<BoletoM> lista;
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT * FROM Boleto ";
+            String sql = "SELECT * FROM VW_BOLETO ";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
-            Lista = new ArrayList();
+            lista = new ArrayList();
             while (rs.next()) {
                 BoletoM bole = new BoletoM();
                 bole.setIdBoleto(rs.getString("IdBoleto"));
@@ -92,14 +92,14 @@ public class BoletoD extends DAO {
                 bole.setCodigoUsuario(rs.getString("Usuario"));
                 bole.setCodigoBus(rs.getString("Bus"));
                 bole.setCodigoChofer(rs.getString("Chofer"));
-                Lista.add(bole);
+                lista.add(bole);
             }
         } catch (SQLException e) {
             throw e;
         } finally {
             this.Cerrar();
         }
-        return Lista;
+        return lista;
     }
 
     public BoletoM LeerId(String Codigo) throws Exception {
@@ -132,110 +132,4 @@ public class BoletoD extends DAO {
         }
         return bole;
     }
-
-    public List<String> autocompleteAsistente(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreAsistente,' ',ApellidoAsistente) AS Asistente from Asistente where UPPER(NombreAsistente) like UPPER(?) or UPPER(ApellidoAsistente) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Asistente"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
-    public List<String> autocompletePasajero(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombrePasajero,' ',ApellidoPasajero) AS Pasajero from Pasajero where UPPER(NombrePasajero) like UPPER(?) or UPPER(ApellidoPasajero) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Pasajero"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
-    public List<String> autocompleteUsuario(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreUsuario,' ',ApellidoUsuario) AS Usuario from Usuario where UPPER(NombreUsuario) like UPPER(?) or UPPER(ApellidoUsuario) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Usuario"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
-    public List<String> autocompleteBus(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(PlacaBus,' / ',TelefonoBus) AS Bus from Bus where UPPER(PlacaBus) like UPPER(?) or UPPER(TelefonoBus) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Bus"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
-    public List<String> autocompleteChofer(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreChofer,' ',ApellidoChofer) AS Chofer from Chofer where UPPER(NombreChofer) like UPPER(?) or UPPER(ApellidoChofer) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Chofer"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
 }

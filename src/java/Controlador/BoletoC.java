@@ -51,23 +51,8 @@ public class BoletoC implements Serializable {
 
     private void guardar() throws Exception {
         BoletoD DAO;
-        UsuarioD dao2;
-        AsistenteD dao3;
-        PasajeroD dao4;
-        BusD dao5;
-        ChoferD dao6;
         try {
             DAO = new BoletoD();
-            dao2 = new UsuarioD();
-            dao3 = new AsistenteD();
-            dao4 = new PasajeroD();
-            dao5 = new BusD();
-            dao6 = new ChoferD();
-            boleto.setCodigoUsuario(dao2.obtenerCodigoUsuario(boleto.getNombreUsuario()));
-            boleto.setCodigoAsistente(dao3.obtenerCodigoAsistente(boleto.getNombreAsistente()));
-            boleto.setCodigoPasajero(dao4.obtenerCodigoPasajero(boleto.getNombrePasajero()));
-            boleto.setCodigoBus(dao5.obtenerCodigoBus(boleto.getPlacaBus()));
-            boleto.setCodigoChofer(dao6.obtenerCodigoChofer(boleto.getNombreChofer()));
             DAO.registrar(boleto);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("AGREGADO"));
             Listar();
@@ -80,23 +65,8 @@ public class BoletoC implements Serializable {
 
     public void modificar() throws Exception {
         BoletoD DAO;
-        UsuarioD dao2;
-        AsistenteD dao3;
-        PasajeroD dao4;
-        BusD dao5;
-        ChoferD dao6;
         try {
             DAO = new BoletoD();
-            dao2 = new UsuarioD();
-            dao3 = new AsistenteD();
-            dao4 = new PasajeroD();
-            dao5 = new BusD();
-            dao6 = new ChoferD();
-            boleto.setCodigoUsuario(dao2.obtenerCodigoUsuario(boleto.getNombreUsuario()));
-            boleto.setCodigoAsistente(dao3.obtenerCodigoAsistente(boleto.getNombreAsistente()));
-            boleto.setCodigoPasajero(dao4.obtenerCodigoPasajero(boleto.getNombrePasajero()));
-            boleto.setCodigoBus(dao5.obtenerCodigoBus(boleto.getPlacaBus()));
-            boleto.setCodigoChofer(dao6.obtenerCodigoChofer(boleto.getNombreChofer()));
             DAO.Modificar(boleto);
             Listar();
             Limpiar();
@@ -140,30 +110,5 @@ public class BoletoC implements Serializable {
         } catch (Exception e) {
             throw e;
         }
-    }
-
-    public List<String> completeTextAsistente(String query) throws SQLException {
-        BoletoD DAO = new BoletoD();
-        return DAO.autocompleteAsistente(query);
-    }
-
-    public List<String> completeTextPasajero(String query) throws SQLException {
-        BoletoD DAO = new BoletoD();
-        return DAO.autocompletePasajero(query);
-    }
-
-    public List<String> completeTextUsuario(String query) throws SQLException {
-        BoletoD DAO = new BoletoD();
-        return DAO.autocompleteUsuario(query);
-    }
-
-    public List<String> completeTextBus(String query) throws SQLException {
-        BoletoD DAO = new BoletoD();
-        return DAO.autocompleteBus(query);
-    }
-
-    public List<String> completeTextChofer(String query) throws SQLException {
-        BoletoD DAO = new BoletoD();
-        return DAO.autocompleteChofer(query);
     }
 }

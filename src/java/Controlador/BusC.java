@@ -3,7 +3,6 @@ package Controlador;
 import DAO.BusD;
 import Modelo.BusM;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;

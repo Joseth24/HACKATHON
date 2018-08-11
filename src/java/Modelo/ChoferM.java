@@ -12,7 +12,6 @@ public class ChoferM {
     
     //Asistente    
     private String CodigoAsistente;
-    private String NombreAsistente;
     
    
 

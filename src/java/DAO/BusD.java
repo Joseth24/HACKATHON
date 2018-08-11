@@ -12,7 +12,7 @@ public class BusD extends DAO {
     public void registrar(BusM bus) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Bus (PlacaBus,TelefonoBus) VALUES(?,?)";
+            String sql = "SP_ADD_BUS ?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, bus.getPlaca());
             st.setString(2, bus.getTelefono());
@@ -41,7 +41,7 @@ public class BusD extends DAO {
     public void Modificar(BusM bus) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
+            String sql = "SP_UPDATE_BUS ?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, bus.getIdBus());
             st.setString(2, bus.getPlaca());
@@ -117,26 +117,4 @@ public class BusD extends DAO {
             throw e;
         }
     }
-
-    public List<String> autocompleteBus(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(PlacaBus,' / ',TelefonoBus) AS Bus from Bus where UPPER(PlacaBus) like UPPER(?) or UPPER(TelefonoBus) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Bus"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
 }

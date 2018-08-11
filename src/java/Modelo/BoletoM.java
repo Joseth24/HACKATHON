@@ -14,22 +14,17 @@ public class BoletoM {
 
     //Pasajero
     private String CodigoPasajero;
-    private String NombrePasajero;
 
     //Usuario
     private String CodigoUsuario;
-    private String NombreUsuario;
 
     //Bus
     private String CodigoBus;
-    private String PlacaBus;
     
     //Asistente
     private String CodigoAsistente;
-    private String NombreAsistente;
     
     //Chofer
     private String CodigoChofer;
-    private String NombreChofer;
 
 }

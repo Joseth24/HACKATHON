@@ -12,7 +12,7 @@ public class AsistenteD extends DAO {
     public void registrar(AsistenteM asistente) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Asistente (NombreAsistente, ApellidoAsistente, CelularAsistente) VALUES(?,?,?)";
+            String sql = "EXEC SP_ADD_ASISTENTE ?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, asistente.getNombre());
             st.setString(2, asistente.getApellido());
@@ -121,26 +121,4 @@ public class AsistenteD extends DAO {
             throw e;
         }
     }
-
-    public List<String> autocompleteAsistente(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreAsistente,' ',ApellidoAsistente) AS Nombres from Asistente where UPPER(NombreAsistente) like UPPER(?) or UPPER(ApellidoAsistente) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Nombres"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
 }

@@ -15,20 +15,20 @@ import lombok.Data;
 @Named(value = "asistenteC")
 @SessionScoped
 @Data
-public class AsistenteC implements Serializable{
+public class AsistenteC implements Serializable {
 
     private AsistenteM asistente = new AsistenteM();
     private List<AsistenteM> lstAsistente;
     private String accion = "Defecto";
 
     @PostConstruct
-    public void Iniciar(){
+    public void Iniciar() {
         try {
             Listar();
         } catch (Exception e) {
         }
     }
-    
+
     public void operar() throws Exception {
         switch (accion) {
             case "Registrar":
@@ -106,9 +106,5 @@ public class AsistenteC implements Serializable{
             throw e;
         }
     }
-    
-        public List<String> completeTextAsistente(String query) throws SQLException {
-        AsistenteD DAO = new AsistenteD();
-        return DAO.autocompleteAsistente(query);
-    }
+
 }

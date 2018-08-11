@@ -3,7 +3,6 @@ package Controlador;
 import DAO.UsuarioD;
 import Modelo.UsuarioM;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;

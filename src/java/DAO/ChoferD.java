@@ -12,7 +12,7 @@ public class ChoferD extends DAO {
     public void registrar(ChoferM chofer) throws Exception {
         try {
             this.Conexion();
-            String sql = "INSERT INTO Chofer (NombreChofer,ApellidoChofer,TelefonoChofer,Asistente_IdAsistente) VALUES(?,?,?,?)";
+            String sql = "SP_ADD_CHOFER ?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, chofer.getNombreChofer());
             st.setString(2, chofer.getApellidoChofer());
@@ -43,7 +43,7 @@ public class ChoferD extends DAO {
     public void Modificar(ChoferM chofer) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ACTUALIZAR_ASISTENTE ?,?,?,?";
+            String sql = "SP_UPDATE_CHOFER ?,?,?,?,?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, chofer.getCodigoChofer());
             st.setString(2, chofer.getNombreChofer());
@@ -59,14 +59,14 @@ public class ChoferD extends DAO {
     }
 
     public List<ChoferM> Listar() throws Exception {
-        List<ChoferM> Lista;
+        List<ChoferM> lista;
         ResultSet rs;
         try {
             this.Conexion();
             String sql = "SELECT * FROM VW_CHOFER ";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
-            Lista = new ArrayList();
+            lista = new ArrayList();
             while (rs.next()) {
                 ChoferM chof = new ChoferM();
                 chof.setCodigoChofer(rs.getString("IdChofer"));
@@ -74,35 +74,14 @@ public class ChoferD extends DAO {
                 chof.setApellidoChofer(rs.getString("ApellidoChofer"));
                 chof.setTelefonoChofer(rs.getString("TelefonoChofer"));
                 chof.setCodigoAsistente(rs.getString("Asistente"));
-                Lista.add(chof);
+                lista.add(chof);
             }
         } catch (SQLException e) {
             throw e;
         } finally {
             this.Cerrar();
         }
-        return Lista;
-    }
-
-    public List<String> autocompleteAsistente(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreAsistente,' ',ApellidoAsistente) AS Asistente from Asistente where UPPER(NombreAsistente) like UPPER(?) or UPPER(ApellidoAsistente) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Asistente"));
-            }
-            return Lista;
-        } catch (SQLException e) {
-            throw e;
-        }
+        return lista;
     }
 
     public ChoferM LeerId(String Codigo) throws Exception {
@@ -142,27 +121,6 @@ public class ChoferD extends DAO {
                 return rs.getString("IdChofer");
             }
             return null;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
-    public List<String> autocompleteChofer(String Consulta) throws SQLException {
-        this.Conexion();
-        ResultSet rs;
-        List<String> Lista;
-        try {
-            String sql = "select concat(NombreChofer,' ',ApellidoChofer) AS Chofer from Chofer where UPPER(NombreChofer) like UPPER(?) or UPPER(ApellidoChofer) like UPPER(?)";
-            PreparedStatement ps = this.getCn().prepareCall(sql);
-            ps.setString(1, "%" + Consulta + "%");
-            ps.setString(2, "%" + Consulta + "%");
-            Lista = new ArrayList<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Lista.add(rs.getString("Chofer"));
-            }
-            return Lista;
         } catch (SQLException e) {
             throw e;
         }
