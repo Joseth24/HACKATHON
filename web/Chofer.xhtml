@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>CHOFER</title>
+    </h:head>
+    <h:body>
+        <p:growl autoUpdate="true"/>
+        <h:form id="frm">
+            <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{choferC.setAccion('Registrar')}" update=":dlgDatos :newform"/>
+            <p:dataTable id="data" value="#{choferC.lstChofer}" var="chofer" rows="10" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,10000"  emptyMessage="No esta la Lista">
+
+                <f:facet name="header">
+                </f:facet>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{chofer.nombreChofer}"/>
+                </p:column>
+                <p:column headerText="Apellido">
+                    <h:outputText value="#{chofer.apellidoChofer}"/>
+                </p:column>
+                <p:column headerText="Telefono">
+                    <h:outputText value="#{chofer.telefonoChofer}"/>
+                </p:column>
+                <p:column headerText="Asistente">
+                    <h:outputText value="#{chofer.codigoAsistente}"/>
+                </p:column>
+                <p:column style="width:54px">
+                    <p:commandButton title="MODIFICAR" icon="ui-icon-pencil" actionListener="#{choferC.leerID(chofer.codigoChofer)}" oncomplete="PF('wdlgDatos').show();" update=":dlgDatos"/>
+                </p:column>
+                <p:column style="width:54px">
+                    <p:growl id="message" showDetail="true"/>
+                    <p:commandButton title="ELIMINAR" icon="ui-icon-circle-close" actionListener="#{choferC.eliminar(chofer)}" update="data">
+                        <p:confirm header="Confirmación" message=" ¿Deseas Eliminar? " icon="ui-icon-alert"/>
+                        <p:tooltip trackMouse="true"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="face" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialo-no" icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </p:column>
+                <f:facet name="footer">
+                    EN TOTAL HAY #{fn:length(choferC.lstChofer)} REGISTRADOS.
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog showEffect="explode" modal="true" hideEffect="explode" header="Datos" widgetVar="wdlgDatos" id="dlgDatos">
+            <h:form id="newform">
+                <p:panelGrid columns="1">
+                    <p:inputText placeholder="NOMBRE" value="#{choferC.chofer.nombreChofer}" requiredMessage="INGRESAR NOMBRE" required="true">
+                        <p:keyFilter regEx="/[ABCDEFGHIJKLMN ÑOPQRSTUVWXYZ]/i"/>
+                    </p:inputText>
+                    <p:inputText placeholder="APELLIDO" value="#{choferC.chofer.apellidoChofer}" requiredMessage="INGRESAR APELLIDO" required="true">
+                        <p:keyFilter regEx="/[ABCDEFGHIJKLMN ÑOPQRSTUVWXYZ]/i"/>
+                    </p:inputText>
+                    <p:inputText placeholder="TELEFONO" value="#{choferC.chofer.telefonoChofer}" requiredMessage="INGRESAR NUMERO DE CELULAR" required="true"/>
+
+                    <p:outputLabel value="ASISTENTE"/>
+                    <p:autoComplete value="#{choferC.chofer.nombreAsistente}" completeMethod="#{choferC.completeText}" forceSelection="true">
+                    </p:autoComplete>
+                    <p:commandButton value="#{choferC.accion}" actionListener="#{choferC.operar()}" oncomplete="PF('wdlgDatos').hide();" update="dlgDatos :frm:data"/>
+                    <p:commandButton value="CANCELAR" immediate="true" oncomplete="PF('wdlgdatos').hide();"/>
+                </p:panelGrid>
+
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+
