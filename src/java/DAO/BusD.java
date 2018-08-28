@@ -12,7 +12,7 @@ public class BusD extends DAO {
     public void registrar(BusM bus) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ADD_BUS ?,?";
+            String sql = "INSERT INTO Bus (PlacaBus, TelefonoBus) VALUES (?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, bus.getPlaca());
             st.setString(2, bus.getTelefono());
@@ -41,11 +41,11 @@ public class BusD extends DAO {
     public void Modificar(BusM bus) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_UPDATE_BUS ?,?,?";
+            String sql = "UPDATE Bus SET  PlacaBus=?, TelefonoBus=? WHERE IdBus = ?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, bus.getIdBus());
-            st.setString(2, bus.getPlaca());
-            st.setString(3, bus.getTelefono());
+            st.setString(1, bus.getPlaca());
+            st.setString(2, bus.getTelefono());
+            st.setString(3, bus.getIdBus());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;

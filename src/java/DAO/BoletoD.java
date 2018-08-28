@@ -12,7 +12,7 @@ public class BoletoD extends DAO {
     public void registrar(BoletoM boleto) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ADD_BOLETO ?,?,?,?,?,?,?,?,?,?";
+            String sql = "INSERT INTO Boleto (OrigenBoleto,DestinoBoleto,FechaViajeBoleto,CostoBoleto,HoraPartida,Asistente_IdAsistente,Pasajero_IdPasajero,Usuario_IdUsuario,Bus_IdBus,Chofer_IdChofer) VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, boleto.getOrigen());
             st.setString(2, boleto.getDestino());
@@ -49,19 +49,19 @@ public class BoletoD extends DAO {
     public void Modificar(BoletoM bole) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_UPDATE_BOLETO ?,?,?,?,?,?,?,?,?,?,?";
+            String sql = "UPDATE Boleto SET OrigenBoleto=?,DestinoBoleto=?,FechaViajeBoleto=?,CostoBoleto=?,HoraPartida=?,Asistente_IdAsistente=?,Pasajero_IdPasajero=?,Usuario_IdUsuario,Bus_IdBus=?,Chofer_IdChofer=? WHERE IdBoleto =?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, bole.getIdBoleto());
-            st.setString(2, bole.getOrigen());
-            st.setString(3, bole.getDestino());
-            st.setString(4, bole.getFechaViaje());
-            st.setString(5, bole.getCosto());
-            st.setString(6, bole.getPartida());
-            st.setString(7, bole.getCodigoAsistente());
-            st.setString(8, bole.getCodigoPasajero());
-            st.setString(9, bole.getCodigoUsuario());
-            st.setString(10, bole.getCodigoBus());
-            st.setString(11, bole.getCodigoChofer());
+            st.setString(1, bole.getOrigen());
+            st.setString(2, bole.getDestino());
+            st.setString(3, bole.getFechaViaje());
+            st.setString(4, bole.getCosto());
+            st.setString(5, bole.getPartida());
+            st.setString(6, bole.getCodigoAsistente());
+            st.setString(7, bole.getCodigoPasajero());
+            st.setString(8, bole.getCodigoUsuario());
+            st.setString(9, bole.getCodigoBus());
+            st.setString(10, bole.getCodigoChofer());
+            st.setString(11, bole.getIdBoleto());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -75,7 +75,7 @@ public class BoletoD extends DAO {
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT * FROM VW_BOLETO ";
+            String sql = "SELECT IdBoleto, OrigenBoleto, DestinoBoleto,FORMAT(CONVERT(date, FechaViajeBoleto,103),'dd/MM/yyyy','en-gb') AS FechaViajeBoleto, CostoBoleto, HoraPartida,CONCAT(Asistente.NombreAsistente,' ',Asistente.ApellidoAsistente) AS Asistente, CONCAT(Pasajero.NombrePasajero,' ',Pasajero.ApellidoPasajero) AS Pasajero, CONCAT(Usuario.NombreUsuario,' ',Usuario.ApellidoUsuario) AS Usuario, CONCAT(Bus.PlacaBus,' ',Bus.TelefonoBus) AS Bus, CONCAT(Chofer.NombreChofer,' ', Chofer.ApellidoChofer) AS Chofer FROM Boleto INNER JOIN Asistente ON Boleto.Asistente_IdAsistente = Asistente.IdAsistente INNER JOIN Pasajero ON Boleto.Pasajero_IdPasajero = Pasajero.IdPasajero INNER JOIN Usuario ON Boleto.Usuario_IdUsuario = Usuario.IdUsuario INNER JOIN Bus ON Boleto.Bus_IdBus = Bus.IdBus INNER JOIN Chofer ON Boleto.Chofer_IdChofer = Chofer.IdChofer ";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
             lista = new ArrayList();

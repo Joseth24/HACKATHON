@@ -16,7 +16,7 @@
                 <p:menuitem value="BOLETO" outcome="Boleto.xhtml" icon="ui-icon-search">
                     <f:param name="i" value="1" />
                 </p:menuitem>
-                <p:menuitem value="BUS" outcome="Bus.xhtml" icon="ui-icon-document">
+                <p:menuitem value="HEADER AND FOOTER" outcome="Bus.xhtml" icon="ui-icon-document">
                     <f:param name="i" value="2" />
                 </p:menuitem>
                 <p:menuitem value="CHOFER" outcome="Chofer.xhtml" icon="ui-icon-wrench">
@@ -35,15 +35,14 @@
         <p:growl autoUpdate="true"/>
         <h:form id="frm">
             <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{busC.setAccion('Registrar')}" update=":dlgDatos :newform"/>
-            <p:dataTable id="data" value="#{busC.lstBus}" var="bus" rows="10" paginator="true" 
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
-                         rowsPerPageTemplate="5,10,15,10000"  emptyMessage="No esta la Lista">
-
-                <f:facet name="{Exporters}">
-                    <h:commandLink>
-                        <p:graphicImage value="/resources/icon/pdf.png" width="50"/>
-                        <p:dataExporter type="pdf" target="data" fileName="Bus"/>
-                    </h:commandLink>
+            <p:dataTable id="data" var="bus" value="#{busC.lstBus}">
+                <h:commandLink>
+                    <p:graphicImage value="/resources/icon/pdf.png" width="50"/>
+                    <p:dataExporter type="pdf" target="data" fileName="Bus"/>
+                </h:commandLink>
+                
+                <f:facet name="header">
+                    <h1>BUS</h1>
                 </f:facet>
                 <p:column headerText="PLACA" >
                     <h:outputText value="#{bus.placa}"/>

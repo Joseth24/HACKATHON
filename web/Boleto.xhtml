@@ -39,13 +39,16 @@
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                          rowsPerPageTemplate="5,10,15,10000"  emptyMessage="No esta la Lista">
 
-               
-                    <f:facet name="{Exporters}">
-                        <h:commandLink>
-                            <p:graphicImage value="/resources/icon/pdf.png" width="50"/>
-                            <p:dataExporter type="pdf" target="data" fileName="Boleto"/>
-                        </h:commandLink>
-                    </f:facet>
+
+                <f:facet name="{Exporters}">
+                    <h:commandLink>
+                        <p:graphicImage value="/resources/icon/pdf.png" width="50"/>
+                        <p:dataExporter type="pdf" target="data" fileName="Boleto"/>
+                    </h:commandLink>
+                </f:facet>
+                <p:column style="width:16px">
+                    <p:rowToggler />
+                </p:column>
 
                 <p:column headerText="ORIGEN">
                     <h:outputText value="#{boleto.origen}"/>
@@ -56,21 +59,31 @@
                 <p:column headerText="FECHA DE VIAJE">
                     <h:outputText value="#{boleto.fechaViaje}"/>
                 </p:column>
-                <p:column headerText="COSTO DE VIAJE">
-                    <h:outputText value="S/.#{boleto.costo}"/>
-                </p:column>
-                <p:column headerText="HORA DE PARTIDA">
-                    <h:outputText value="#{boleto.partida} AM"/>
-                </p:column>
-                <p:column headerText="ASISTENTE">
-                    <h:outputText value="#{boleto.codigoAsistente}"/>
-                </p:column>
-                <p:column headerText="PASAJERO">
-                    <h:outputText value="#{boleto.codigoPasajero}"/>
-                </p:column>
-                <p:column headerText="USUARIO">
-                    <h:outputText value="#{boleto.codigoUsuario}"/>
-                </p:column>
+
+                <p:rowExpansion>
+                    <p:panelGrid  columns="2" columnClasses="label,value" style="width:300px">
+                        <h:outputText value="COSTO DE VIAJE" />
+                        <h:outputText value="S/.#{boleto.costo}" />
+
+                        <h:outputText value="HORA DE PARTIDA" />
+                        <h:outputText value="#{boleto.partida}" />
+
+                        <h:outputText value="ASISTENTE" />
+                        <h:outputText value="#{boleto.codigoAsistente}" style="color:#{car.color}"/>
+
+                        <h:outputText value="PASAJERO" />
+                        <h:outputText value="$#{boleto.codigoPasajero}" />
+
+                        <h:outputText value="USUARIO" />                        
+                        <h:outputText value="$#{boleto.codigoUsuario}" />
+                        <h:outputText value="BUS (PLACA/TELEFONO)" />
+                        <h:outputText value="$#{boleto.codigoBus}" />
+                        <h:outputText value="CHOFER" />
+                        <h:outputText value="$#{boleto.codigoChofer}" />
+                        <h:outputText value="Price" />
+                    </p:panelGrid>
+                </p:rowExpansion>
+
                 <p:column headerText="BUS (PLACA/TELEFONO)">
                     <h:outputText value="#{boleto.codigoBus}"/>
                 </p:column>

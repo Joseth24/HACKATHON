@@ -12,7 +12,7 @@ public class PasajeroD extends DAO {
     public void registrar(PasajeroM pasajero) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ADD_PASAJERO ?,?,?";
+            String sql = "INSERT INTO Pasajero (NombrePasajero,ApellidoPasajero,DniPasajero) VALUES (?,?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, pasajero.getNombre());
             st.setString(2, pasajero.getApellido());
@@ -42,12 +42,12 @@ public class PasajeroD extends DAO {
     public void Modificar(PasajeroM asis) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_UPDATE_PASAJERO ?,?,?,?";
+            String sql = "UPDATE Pasajero SET NombrePasajero=?,ApellidoPasajero=?,DniPasajero=? WHERE IdPasajero = ?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, asis.getIdPasajero());
-            st.setString(2, asis.getNombre());
-            st.setString(3, asis.getApellido());
-            st.setString(4, asis.getDni());
+            st.setString(1, asis.getNombre());
+            st.setString(2, asis.getApellido());
+            st.setString(3, asis.getDni());
+            st.setString(4, asis.getIdPasajero());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;

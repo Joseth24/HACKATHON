@@ -12,7 +12,7 @@ public class ChoferD extends DAO {
     public void registrar(ChoferM chofer) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ADD_CHOFER ?,?,?,?";
+            String sql = "INSERT INTO Chofer (NombreChofer,ApellidoChofer,TelefonoChofer,Asistente_IdAsistente) VALUES(?,?,?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, chofer.getNombreChofer());
             st.setString(2, chofer.getApellidoChofer());
@@ -43,13 +43,13 @@ public class ChoferD extends DAO {
     public void Modificar(ChoferM chofer) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_UPDATE_CHOFER ?,?,?,?,?";
+            String sql = "UPDATE Chofer SET NombreChofer=?,ApellidoChofer=?,TelefonoChofer=?,Asistente_IdAsistente=? WHERE IdChofer=?s";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, chofer.getCodigoChofer());
-            st.setString(2, chofer.getNombreChofer());
-            st.setString(3, chofer.getApellidoChofer());
-            st.setString(4, chofer.getTelefonoChofer());
-            st.setString(5, chofer.getCodigoAsistente());
+            st.setString(1, chofer.getNombreChofer());
+            st.setString(2, chofer.getApellidoChofer());
+            st.setString(3, chofer.getTelefonoChofer());
+            st.setString(4, chofer.getCodigoAsistente());
+            st.setString(5, chofer.getCodigoChofer());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -63,7 +63,7 @@ public class ChoferD extends DAO {
         ResultSet rs;
         try {
             this.Conexion();
-            String sql = "SELECT * FROM VW_CHOFER ";
+            String sql = "SELECT IdChofer,NombreChofer,ApellidoChofer,TelefonoChofer,CONCAT(Asistente.NombreAsistente,' ',Asistente.ApellidoAsistente) AS Asistente FROM Chofer INNER JOIN Asistente ON Chofer.Asistente_IdAsistente = Asistente.IdAsistente ";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             rs = st.executeQuery();
             lista = new ArrayList();

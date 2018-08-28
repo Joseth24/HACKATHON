@@ -12,7 +12,7 @@ public class UsuarioD extends DAO {
     public void registrar(UsuarioM usuario) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_ADD_USUARIO ?,?,?";
+            String sql = "INSERT INTO Usuario (NombreUsuario,ApellidoUsuario,CelularUsuario) VALUES (?,?,?)";
             PreparedStatement st = this.getCn().prepareStatement(sql);
             st.setString(1, usuario.getNombre());
             st.setString(2, usuario.getApellido());
@@ -42,12 +42,12 @@ public class UsuarioD extends DAO {
     public void Modificar(UsuarioM user) throws Exception {
         try {
             this.Conexion();
-            String sql = "SP_UPDATE_USUARIO ?,?,?,?";
+            String sql = "UPDATE Usuario SET NombreUsuario=?, ApellidoUsuario=?, CelularUsuario=? WHERE IdUsuario = ?";
             PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setString(1, user.getIdUsuario());
-            st.setString(2, user.getNombre());
-            st.setString(3, user.getApellido());
-            st.setString(4, user.getCelular());
+            st.setString(1, user.getNombre());
+            st.setString(2, user.getApellido());
+            st.setString(3, user.getCelular());
+            st.setString(4, user.getIdUsuario());
             st.executeUpdate();
         } catch (SQLException e) {
             throw e;
