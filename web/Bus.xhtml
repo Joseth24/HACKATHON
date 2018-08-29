@@ -28,6 +28,9 @@
                 <p:menuitem value="USUARIO" outcome="Usuario.xhtml" icon="ui-icon-person">
                     <f:param name="i" value="5" />
                 </p:menuitem>
+                <p:menuitem value="GRUPOS" outcome="Boleto_1_1.xhtml" icon="ui-icon-person">
+                    <f:param name="i" value="6" />
+                </p:menuitem>
             </p:tabMenu>
         </h:form>
     </h:head>
@@ -40,7 +43,7 @@
                     <p:graphicImage value="/resources/icon/pdf.png" width="50"/>
                     <p:dataExporter type="pdf" target="data" fileName="Bus"/>
                 </h:commandLink>
-                
+
                 <f:facet name="header">
                     <h1>BUS</h1>
                 </f:facet>
