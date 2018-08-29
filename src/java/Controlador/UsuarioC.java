@@ -18,7 +18,7 @@ public class UsuarioC implements Serializable {
 
     private UsuarioM usuario = new UsuarioM();
     private List<UsuarioM> lstUsuario;
-    private String accion = "Defecto";
+    private String accion = "Modificar";
 
     @PostConstruct
     public void Iniciar() {
