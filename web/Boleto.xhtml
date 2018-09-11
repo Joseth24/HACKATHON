@@ -19,13 +19,13 @@
                 <p:menuitem value="HEADER AND FOOTER" outcome="Bus.xhtml" icon="ui-icon-document">
                     <f:param name="i" value="2" />
                 </p:menuitem>
-                <p:menuitem value="CHOFER" outcome="Chofer.xhtml" icon="ui-icon-wrench">
-                    <f:param name="i" value="3" />
-                </p:menuitem>
-                <p:menuitem value="PASAJERO" outcome="Pasajero.xhtml" icon="ui-icon-person">
-                    <f:param name="i" value="4" />
-                </p:menuitem>
-                 <p:menuitem value="CLICK" outcome="Usuario_1.xhtml" icon="ui-icon-person">
+                <!--                <p:menuitem value="CHOFER" outcome="Chofer.xhtml" icon="ui-icon-wrench">
+                                    <f:param name="i" value="3" />
+                                </p:menuitem>
+                                <p:menuitem value="PASAJERO" outcome="Pasajero.xhtml" icon="ui-icon-person">
+                                    <f:param name="i" value="4" />
+                                </p:menuitem>-->
+                <p:menuitem value="CLICK" outcome="Usuario_1.xhtml" icon="ui-icon-person">
                     <f:param name="i" value="5" />
                 </p:menuitem>
                 <p:menuitem value="GRUPOS" outcome="Boleto_1_1.xhtml" icon="ui-icon-person">
@@ -75,15 +75,16 @@
                         <h:outputText value="#{boleto.codigoAsistente}" style="color:#{car.color}"/>
 
                         <h:outputText value="PASAJERO" />
-                        <h:outputText value="$#{boleto.codigoPasajero}" />
+                        <h:outputText value="#{boleto.codigoPasajero}" />
 
                         <h:outputText value="USUARIO" />                        
-                        <h:outputText value="$#{boleto.codigoUsuario}" />
+                        <h:outputText value="#{boleto.codigoUsuario}" />
+
                         <h:outputText value="BUS (PLACA/TELEFONO)" />
-                        <h:outputText value="$#{boleto.codigoBus}" />
+                        <h:outputText value="#{boleto.codigoBus}" />
+
                         <h:outputText value="CHOFER" />
-                        <h:outputText value="$#{boleto.codigoChofer}" />
-                        <h:outputText value="Price" />
+                        <h:outputText value="#{boleto.codigoChofer}" />
                     </p:panelGrid>
                 </p:rowExpansion>
 
